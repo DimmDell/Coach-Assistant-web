@@ -116,6 +116,7 @@ export default {
     },
     data() {
         return {
+            players: [],
             open: false,
             newPlayer: {
                 name: '',

@@ -86,7 +86,7 @@ import Vue from 'vue'
 import db from "@/firebase.js";
 
 Vue.component('datepicker', {
-    template: '<input type="text" id="datePicker" value="" required placeholder="Выберите дату матча" class="form-control"/>',
+    template: '<input type="text" id="datePicker" value="" required placeholder="Выберите дату тренировки" class="form-control"/>',
     props: ['dateFormat'],
     mounted: function () {
         var self = this;

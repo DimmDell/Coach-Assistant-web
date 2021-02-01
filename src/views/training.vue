@@ -3,19 +3,21 @@
     <div class="container">
         <div id="mainCard" class="card">
             <div class="card-header">
-                <h1>Сведения о тренировке
+                <h1>
+                    {{training.name}}
                 </h1>
-                <div class="badge badge-secondary">
-                    {{"Название: " +
-              training.name +
-              " | " +
-              "Дата: " +
-              training.date +
-              " | " +
-              "Время: " +
-              training.time
-              }}
-                </div>
+
+                <h3>
+                    <div class="badge badge-secondary">
+                        {{
+                            "Дата: " +
+                            training.date +
+                            " | " +
+                            "Время: " +
+                            training.time
+                        }}
+                    </div>
+                </h3>
 
             </div>
             <div class="card-body">
@@ -86,6 +88,8 @@ export default {
     },
     data() {
         return {
+            games: [],
+            players: [],
             id: "",
             training: "",
             rows: 0

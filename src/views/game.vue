@@ -79,7 +79,7 @@
                     <tbody>
                         <tr v-for="player in igame.starting">
                             <td>
-                                <router-link :to="{ path: '/player/' + player.ID }">{{
+                                <router-link :to="{ path: '/player/' + player.id }">{{
                     player.name
                   }}</router-link>
                             </td>
@@ -125,7 +125,7 @@
                     <tbody>
                         <tr v-for="player in igame.substitutions">
                             <td>
-                                <router-link :to="{ path: '/player/' + player.ID }">{{
+                                <router-link :to="{ path: '/player/' + player.id }">{{
                     player.name
                   }}</router-link>
                             </td>
@@ -175,6 +175,7 @@ export default {
     },
     data() {
         return {
+            games: [],
             id: "",
             igame: "",
             ourTeam: "",

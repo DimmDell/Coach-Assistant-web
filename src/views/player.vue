@@ -94,6 +94,7 @@ export default {
     },
     data() {
         return {
+            players: [],
             iplayer: "",
             playerGames: [],
             filtered: [],

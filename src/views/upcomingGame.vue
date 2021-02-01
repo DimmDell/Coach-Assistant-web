@@ -91,6 +91,7 @@ export default {
     },
     data() {
         return {
+            players: [],
             id: '',
             igame: '',
             arr: []

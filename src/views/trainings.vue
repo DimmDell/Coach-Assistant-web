@@ -26,7 +26,7 @@
                             <td> {{tr.date}}</td>
                             <td>{{tr.time}}</td>
                             <td>{{tr.players.length}}</td>
-                            <td><i v-on:click="remove(tr)" class="fas fa-trash-alt"></i> </td>
+                            <td><i style="cursor: pointer;" v-on:click="remove(tr)" class="fas fa-trash-alt"></i> </td>
                             <td>
                                 <router-link :to="{path: '/training/' + tr.id}"><i class="fa fa-info-circle"></i> </router-link>
                             </td>
@@ -53,7 +53,9 @@ export default {
         players: trainingsRef,
     },
     data() {
-        return {}
+        return {
+            players: []
+        }
     },
     methods: {
         remove: function (training) {
