@@ -1,7 +1,6 @@
 <template>
 <div class="players">
     <div id="con" class="container">
-
         <vue-modaltor :visible="open" @hide="hideModal" :resize-width='{1200:"60%",992:"80%",768:"90%"}'>
             <div class="card-body">
                 <div class="card">
@@ -66,7 +65,9 @@
         <div class="card">
             <div class="card-header">
                 <h3>Состав команды
-                    <button @click="open=true; " class=" btn btn-outline-dark float-right"><i class="fas fa-user-plus"></i></button>
+                    <button @click="open=true; " class=" btn btn-outline-dark float-right">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
                 </h3>
 
             </div>
@@ -84,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="player in players">
+                        <tr v-for="player in players" :key="player.id">
                             <td>{{player.number}}</td>
                             <td> {{player.name + " " + player.surname}}</td>
                             <td>{{player.position}}</td>
@@ -92,7 +93,9 @@
                             <td>{{player.goals}}</td>
                             <td>{{player.assists}}</td>
                             <td>
-                                <router-link :to="{path: '/player/' + player.id}"><i class="fas fa-id-card"></i></router-link>
+                                <router-link :to="{path: '/player/' + player.id}">
+                                    <i class="fas fa-id-card"></i>
+                                </router-link>
                             </td>
                         </tr>
                     </tbody>
@@ -104,8 +107,6 @@
 </template>
 
 <script>
-/* eslint-disable */
-
 import db from '@/firebase.js'
 let playersRef = db.ref('players')
 
@@ -134,30 +135,30 @@ export default {
         },
 
         addPlayer: function () {
-            this.newPlayer.games = 0
-            this.newPlayer.goals = 0
-            this.newPlayer.assists = 0
-            this.newPlayer.injury = false
-            this.newPlayer.recovery = ""
+            this.newPlayer.games = 0;
+            this.newPlayer.goals = 0;
+            this.newPlayer.assists = 0;
+            this.newPlayer.injury = false;
+            this.newPlayer.recovery = "";
 
-            this.newPlayer.number = parseInt(this.newPlayer.number)
-            this.newPlayer.weight = parseInt(this.newPlayer.weight)
-            this.newPlayer.height = parseInt(this.newPlayer.height)
+            this.newPlayer.number = parseInt(this.newPlayer.number);
+            this.newPlayer.weight = parseInt(this.newPlayer.weight);
+            this.newPlayer.height = parseInt(this.newPlayer.height);
             var id = playersRef.push(this.newPlayer);
 
-            this.newPlayer.id = id.key
+            this.newPlayer.id = id.key;
 
             db.ref('players/' + id.key)
                 .set(this.newPlayer)
-                .then(() => {})
+                .then(() => {});
 
-            this.newPlayer.name = '',
-                this.newPlayer.surname = '',
-                this.newPlayer.number = ''
-            this.newPlayer.country = ''
-            this.newPlayer.position = ''
-            this.newPlayer.weight = ''
-            this.newPlayer.height = ''
+            this.newPlayer.name = '';
+            this.newPlayer.surname = '';
+            this.newPlayer.number = '';
+            this.newPlayer.country = '';
+            this.newPlayer.position = '';
+            this.newPlayer.weight = '';
+            this.newPlayer.height = '';
 
         },
         removePlayer: function (player) {

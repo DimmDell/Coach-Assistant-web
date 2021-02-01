@@ -18,16 +18,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="game in games">
+                        <tr v-for="game in games" :key="game.id">
                             <td>{{game.rival}}</td>
                             <td>{{game.competition}}</td>
                             <td>{{game.type}}</td>
                             <td>{{game.date}}</td>
                             <td>
-                                <router-link :to="{path: '/editGame/' + game.id}"><i class="fas fa-edit"></i></router-link>
+                                <router-link :to="{path: '/editGame/' + game.id}">
+                                    <i class="fas fa-edit"></i>
+                                </router-link>
                             </td>
                             <td>
-                                <router-link :to="{path: '/upcomingGame/' + game.id}"><i class="fa fa-info-circle"></i></router-link>
+                                <router-link :to="{path: '/upcomingGame/' + game.id}">
+                                    <i class="fa fa-info-circle"></i>
+                                </router-link>
                             </td>
                         </tr>
                     </tbody>
@@ -39,10 +43,8 @@
 </template>
 
 <script>
-/* eslint-disable */
 import db from '@/firebase.js'
-
-let gamesRef = db.ref('events/upcomingGames')
+let gamesRef = db.ref('events/upcomingGames');
 
 export default {
     name: 'upcomingGames',

@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-md-3 mb-3">
                                     <label for="rival">Соперник</label>
-                                    <input v-model="newGame.rival" type="text" class="form-control" id="rival" placeholder="Название соперника" value required>
+                                    <input v-model="newGame.rival" type="text" class="form-control" id="rival" placeholder="Название соперника" value="" required>
                                     <div class="invalid-feedback">
                                         Необходимо название соперника.
                                     </div>
@@ -65,11 +65,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="player in selectedStartPlayers">
+                                            <tr v-for="player in selectedStartPlayers" :key="player.id">
                                                 <td>{{player.number}}</td>
                                                 <td> {{player.name + " " + player.surname}}</td>
                                                 <td>{{player.position}}</td>
-                                                <td><button v-on:click="removeFromList(player.number)" type="button" class="btn btn-outline-secondary"><i class="fas fa-user-minus"></i></button></td>
+                                                <td>
+                                                    <button v-on:click="removeFromList(player.number)" type="button" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-user-minus"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -83,11 +87,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="player in selectedSubPlayers">
+                                            <tr v-for="player in selectedSubPlayers" :key="player.id">
                                                 <td>{{player.number}}</td>
                                                 <td> {{player.name + " " + player.surname}}</td>
                                                 <td>{{player.position}}</td>
-                                                <td><button v-on:click="removeFromList(player.number)" type="button" class="btn btn-outline-secondary"><i class="fas fa-user-minus"></i></button></td>
+                                                <td>
+                                                    <button v-on:click="removeFromList(player.number)" type="button" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-user-minus"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -95,8 +103,12 @@
                                 <div class="col-md-4 mb-3">
                                     <label>Выбор игроков для стартового состава</label>
                                     <select v-on:change="addToList();" id="playersSelect" required="required" disabled="true" class="custom-select d-block w-100">
-                                        <option value="default" selected="selected" disabled>Выберите игрока</option>
-                                        <option v-for="player in playersArr">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                        <option value="default" selected="selected" disabled>
+                                            Выберите игрока
+                                        </option>
+                                        <option v-for="player in playersArr" :key="player.id">
+                                            {{"#"+player.number + " " +player.surname + " " + player.position}}
+                                        </option>
                                     </select>
                                 </div>
 
@@ -260,21 +272,20 @@ export default {
     },
     created() {
 
-        this.playersArr = []
-        var arr = []
+        this.playersArr = [];
+        var arr = [];
         db.ref("players").once("value", snapshot => {
             var playersObj = snapshot.val();
 
             snapshot.forEach(function (ss) {
                 arr.push(ss.val());
             });
-            this.playersArr = arr
+            this.playersArr = arr;
 
-            var view = document.getElementById('mainCard')
+            var view = document.getElementById('mainCard');
 
-            if (view == null) {
+            if (!("mainCard" in window)) {
                 document.location.reload();
-
             }
 
         });

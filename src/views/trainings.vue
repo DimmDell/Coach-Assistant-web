@@ -4,9 +4,9 @@
 
         <div class="card">
             <div class="card-header">
-                <h3>Тренировки
+                <h3>
+                    Тренировки
                 </h3>
-
             </div>
             <div class="card-body">
                 <table class="table table-striped">
@@ -21,14 +21,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="tr in players">
+                        <tr v-for="tr in trainings" :key="tr.id">
                             <td>{{tr.name}}</td>
                             <td> {{tr.date}}</td>
                             <td>{{tr.time}}</td>
                             <td>{{tr.players.length}}</td>
-                            <td><i style="cursor: pointer;" v-on:click="remove(tr)" class="fas fa-trash-alt"></i> </td>
                             <td>
-                                <router-link :to="{path: '/training/' + tr.id}"><i class="fa fa-info-circle"></i> </router-link>
+                                <i style="cursor: pointer;" v-on:click="remove(tr)" class="fas fa-trash-alt"></i> 
+                            </td>
+                            <td>
+                                <router-link :to="{path: '/training/' + tr.id}">
+                                    <i class="fa fa-info-circle"></i>
+                                </router-link>
                             </td>
 
                         </tr>
@@ -41,8 +45,6 @@
 </template>
 
 <script>
-/* eslint-disable */
-
 import db from '@/firebase.js'
 
 let trainingsRef = db.ref("events/trainings");
@@ -50,7 +52,7 @@ let trainingsRef = db.ref("events/trainings");
 export default {
     name: 'trainings',
     firebase: {
-        players: trainingsRef,
+        trainings: trainingsRef,
     },
     data() {
         return {

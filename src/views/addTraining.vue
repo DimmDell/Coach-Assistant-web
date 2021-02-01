@@ -27,7 +27,9 @@
                                     <label>Выбор участников тренировки</label>
                                     <select v-on:change="addToList();" id="playersSelect" required="required" class="custom-select d-block w-100">
                                         <option value="default" selected="selected" disabled>Выберите игрока</option>
-                                        <option v-for="player in playersArr">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                        <option v-for="player in playersArr" :key="player.id">
+                                            {{"#"+player.number + " " +player.surname + " " + player.position}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -46,7 +48,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="player in trainingPlayers">
+                                                    <tr v-for="player in trainingPlayers" :key="player.id">
                                                         <td>{{player.number}}</td>
                                                         <td> {{player.name + " " + player.surname}}</td>
                                                         <td>{{player.position}}</td>
@@ -59,7 +61,6 @@
                                             <label for="exampleFormControlTextarea1">Описание тренировки</label>
                                             <textarea class="form-control" id="desc" placeholder="Введите описание тренировки" :rows="rows"></textarea>
                                         </div>
-
                                     </div>
 
                                 </div>
@@ -67,7 +68,6 @@
                             </div>
                         </div>
                     </div>
-
                     <hr class="mb-4">
                     <button v-on:click="addTraining" class="btn btn-secondary btn-lg btn-block">Сохранить</button>
                 </form>
@@ -80,9 +80,6 @@
 
 <script>
 import Vue from 'vue'
-
-/* eslint-disable */
-
 import db from "@/firebase.js";
 
 Vue.component('datepicker', {
@@ -94,8 +91,7 @@ Vue.component('datepicker', {
             dateFormat: 'yy-mm-dd',
             onSelect: function (date) {
                 self.$emit('update-date', date);
-                this.date = date
-
+                this.date = date;
             }
         });
     },
@@ -105,9 +101,7 @@ Vue.component('datepicker', {
 });
 
 let gamesRef = db.ref("events/completeGames");
-
 let trainingsRef = db.ref("events/trainings");
-
 let playersRef = db.ref('players');
 
 export default {
@@ -122,53 +116,48 @@ export default {
             return regexp.test(sample);
         },
         addTraining: function () {
-            this.newTraining.players = this.trainingPlayers
+            this.newTraining.players = this.trainingPlayers;
 
-            var date = document.getElementById('datePicker').value
+            var date = document.getElementById('datePicker').value;
+            var des = document.getElementById('desc').value;
 
-            var des = document.getElementById('desc').value
-
-            this.newTraining.description = des
-
-            this.newTraining.date = date
+            this.newTraining.description = des;
+            this.newTraining.date = date;
 
             if (!this.isValid(this.newTraining.time)) {
-                alert("Введите время в формате часы:минуты\n Пример: 12:45")
-                return
+                alert("Введите время в формате часы:минуты\n Пример: 12:45");
+                return;
             }
 
             var id = trainingsRef.push(this.newTraining);
 
-            this.newTraining.id = id.key
+            this.newTraining.id = id.key;
 
             db.ref('events/trainings/' + id.key)
                 .set(this.newTraining)
                 .then(() => {
-
                     document.location.reload();
-                })
+                });
 
         },
         addToList: function () {
-            this.rows += this.trainingPlayers.length + 1
-            var sel = document.getElementById('playersSelect')
+            this.rows += this.trainingPlayers.length + 1;
 
-            var str = sel.value.split(" ")
-
+            var sel = document.getElementById('playersSelect');
+            var str = sel.value.split(" ");
             var p = this.playersArr.find(item => item.number == str[0].replace("#", ""));
 
-            this.trainingPlayers.push(p)
+            this.trainingPlayers.push(p);
 
-            this.playersArr = this.playersArr.filter(item => item != p)
-            sel.selectedIndex = 0
+            this.playersArr = this.playersArr.filter(item => item != p);
+
+            sel.selectedIndex = 0;
         },
         removeFromList: function (num) {
-
             var p = this.trainingPlayers.find(item => item.number == num);
-            this.playersArr.unshift(p)
+            this.playersArr.unshift(p);
             this.playersArr.sort((a, b) => (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0));
-            this.trainingPlayers = this.trainingPlayers.filter(item => item != p)
-
+            this.trainingPlayers = this.trainingPlayers.filter(item => item != p);
         }
 
     },
@@ -201,15 +190,11 @@ export default {
             snapshot.forEach(function (ss) {
                 arr.push(ss.val());
             });
-            this.playersArr = arr
-
-            var view = document.getElementById('mainCard')
-
-            if (view == null) {
+            this.playersArr = arr;
+          
+             if (!("mainCard" in window)) {
                 document.location.reload();
-
             }
-
         });
     }
 };

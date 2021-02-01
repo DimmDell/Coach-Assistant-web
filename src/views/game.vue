@@ -25,7 +25,7 @@
 
                 <div v-if="igame.type === 'Домашний' && ((igame.ourGoals != 'undefined') || (igame.theirGoals != 'undefined') )" style="clear: both">
                     <ul class="float-left" style="padding: 0;  list-style-type: none">
-                        <li v-for="(goal, index) in igame.ourGoals">
+                        <li v-for="goal in igame.ourGoals" :key="goal.num">
                             <b>{{ goal.minute }}</b>
                             <router-link :to="{ path: '/player/' + goal.scID }">{{
                   " " + goal.scoarer
@@ -37,7 +37,7 @@
                         </li>
                     </ul>
                     <ul class="float-right" style=" text-align:right; list-style-type: none">
-                        <li v-for="goal in igame.theirGoals">
+                        <li v-for="goal in igame.theirGoals" :key="goal.num">
                             <b>{{ goal.minute }}</b> {{ " " + goal.scoarer
                 }}<span v-if="goal.assistant">{{
                   " (" + goal.assistant + ") "
@@ -48,14 +48,14 @@
 
                 <div v-if="igame.type === 'Выездной' && ((igame.ourGoals != 'undefined') || (igame.theirGoals != 'undefined') )" style="clear: both">
                     <ul class="float-right" style="list-style-type: none">
-                        <li v-for="goal in igame.theirGoals">
+                        <li v-for="goal in igame.theirGoals" :key="goal.num">
                             <b>{{ goal.minute }}</b> {{ " " + goal.scoarer }}
                             <span v-if="goal.assistant">
                                 {{ " (" + goal.assistant + ") " }}</span>
                         </li>
                     </ul>
                     <ul class="float-left" style="list-style-type: none">
-                        <li v-for="goal in igame.ourGoals">
+                        <li v-for="goal in igame.ourGoals" :key="goal.num">
                             <b>{{ goal.minute }}</b> {{ " " + goal.scoarer }}
                             <span v-if="goal.assistant">
                                 {{ " (" + goal.assistant + ") " }}</span>
@@ -77,7 +77,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="player in igame.starting">
+                        <tr v-for="player in igame.starting" :key="player.id">
                             <td>
                                 <router-link :to="{ path: '/player/' + player.id }">{{
                     player.name
@@ -123,7 +123,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="player in igame.substitutions">
+                        <tr v-for="player in igame.substitutions" :key="player.id">
                             <td>
                                 <router-link :to="{ path: '/player/' + player.id }">{{
                     player.name

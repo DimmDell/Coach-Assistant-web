@@ -28,7 +28,11 @@
               }}
                     </div>
                 </h4>
-                <button class="btn btn-outline-dark"><a :href="'mailto: ' +iplayer.email"><i class="fas fa-envelope"></i> </a></button>
+                <button class="btn btn-outline-dark">
+                    <a :href="'mailto: ' +iplayer.email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </button>
 
             </div>
 
@@ -60,7 +64,7 @@
                         <h2>Матчей не найдено</h2>
                     </thead>
                     <tbody>
-                        <tr v-for="game in filtered">
+                        <tr v-for="game in filtered" :key="game.id">
                             <td>{{ game.rival }}</td>
                             <td>{{ game.date.replace(/-/g,".") }}</td>
                             <td v-if="game.type === 'Домашний'">{{game.scored + " : " + game.conceded}}</td>
@@ -81,7 +85,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 
 import db from "@/firebase.js";
 
@@ -106,21 +109,19 @@ export default {
 
         db.ref("players/" + this.id).once("value", snapshot => {
             this.iplayer = snapshot.val();
-
         });
 
         db.ref("events/completeGames").once("value", snapshot => {
             var arr = [];
             snapshot.forEach(function (ss) {
-
                 arr.push(ss.val());
             });
+
             this.playerGames = arr;
 
             this.filtered = this.playerGames.filter(currentValue =>
                 currentValue.starting.some(item => item.id === this.id)
             );
-
         });
     },
     methods: {

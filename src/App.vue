@@ -1,10 +1,8 @@
 <template>
 <div id="app">
-
     <sidebar-menu :menu="menu" :collapsed="true" />
     <div id="nav">
     </div>
-
     <router-view></router-view>
 </div>
 </template>

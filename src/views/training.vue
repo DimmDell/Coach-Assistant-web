@@ -35,7 +35,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="player in training.players">
+                                        <tr v-for="player in training.players" :key="player.id">
                                             <td>{{player.number}}</td>
                                             <td> {{player.name + " " + player.surname}}</td>
                                             <td>{{player.position}}</td>
@@ -45,7 +45,8 @@
                             </div>
                             <div class="col-md-5 mb-3">
                                 <label for="exampleFormControlTextarea1">Описание тренировки</label>
-                                <textarea class="form-control" id="desc" readonly placeholder="Введите описание тренировки" :rows="rows"></textarea>
+                                <textarea class="form-control" id="desc" readonly placeholder="Введите описание тренировки" :rows="rows">
+                                </textarea>
                             </div>
 
                         </div>
@@ -103,12 +104,17 @@ export default {
         db.ref("events/trainings/" + this.id).once("value", snapshot => {
             this.training = snapshot.val();
 
-            var el = document.getElementById("desc")
-            el.value = this.training.description
+            var el = document.getElementById("desc");
+            el.value = this.training.description;
 
-            this.rows = (this.training.players.length + 1) * 2
+            this.rows = (this.training.players.length + 1) * 2;
         });
 
+        var view = document.getElementById('mainCard');
+
+        if (view == null) {
+            document.location.reload();
+        }
     }
 };
 </script>

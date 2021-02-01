@@ -20,7 +20,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="player in igame.starting">
+                        <tr v-for="player in igame.starting" :key="player.id">
                             <td>
                                 <router-link :to="{ path: '/player/' + player.ID }">{{
                     player.name + " " + player.surname
@@ -51,7 +51,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="player in igame.substitutions">
+                        <tr v-for="player in igame.substitutions" :key="player.id">
                             <td>
                                 <router-link :to="{ path: '/player/' + player.ID }">{{
                     player.name + " " + player.surname
@@ -110,7 +110,7 @@ export default {
                     a.push(ss.val());
                 });
 
-                this.arr = a
+                this.arr = a;
 
                 this.igame.starting.forEach(function (g) {
                     var p = this.arr.find(item => item.id === g.id);

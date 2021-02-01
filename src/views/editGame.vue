@@ -25,7 +25,7 @@
                                             <label>Игрок, забивший гол</label>
                                             <select v-if="theirOG" id="theirOGScoarer" required="required" class="custom-select d-block w-100">
                                                 <option value="default" selected="selected">Выберите игрока</option>
-                                                <option v-for="player in game.starting">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                                <option v-for="player in game.starting" :key="player.id">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
                                             </select>
                                             <input v-if="!theirOG" type="text" class="form-control" id="theirScoarer" placeholder="Введите фамилию игрока" value required>
                                         </div>
@@ -33,7 +33,7 @@
                                             <label>Ассистент</label>
                                             <select v-if="theirOS" id="theirOGAssistant" required="required" class="custom-select d-block w-100">
                                                 <option value="default" selected="selected">Выберите игрока</option>
-                                                <option v-for="player in playersArr">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                                <option v-for="player in playersArr" :key="player.id">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
                                             </select>
                                             <input v-if="!theirOS" type="text" class="form-control" id="theirAssistant" placeholder="Введите фамилию игрока" value required>
                                         </div>
@@ -94,7 +94,7 @@
                                             <label>Игрок, забивший гол</label>
                                             <select v-if="!ourOG" id="ourScoarer" required="required" class="custom-select d-block w-100">
                                                 <option value="default" selected="selected">Выберите игрока</option>
-                                                <option v-for="player in game.starting">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                                <option v-for="player in game.starting" :key="player.id">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
                                             </select>
                                             <input v-if="ourOG" type="text" class="form-control" id="ourOGScoarer" placeholder="Введите фамилию игрока" value required>
                                         </div>
@@ -102,7 +102,7 @@
                                             <label>Ассистент</label>
                                             <select v-if="!ourOS" id="ourAssistant" class="custom-select d-block w-100">
                                                 <option value="" selected="selected">Выберите игрока</option>
-                                                <option v-for="player in playersArr">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
+                                                <option v-for="player in playersArr" :key="player.id">{{"#"+player.number + " " +player.surname + " " + player.position}}</option>
                                             </select>
                                             <input v-if="ourOS" id="ourOGAssistant" type="text" class="form-control" placeholder="Введите фамилию игрока" value>
                                         </div>
@@ -167,7 +167,7 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <ul class="float-left" style="list-style-type: none">
-                                    <li v-for="goal in this.homeGoalsShow">
+                                    <li v-for="goal in this.homeGoalsShow" :key="goal.num">
                                         <b>{{ goal.minute }}</b> {{ " " + goal.scoarer
                 }}<span v-if="goal.assistant">{{
                   " (" + goal.assistant + ") "
@@ -182,7 +182,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <ul class="float-left" style="list-style-type: none">
-                                    <li v-for="goal in this.awayGoalsShow">
+                                    <li v-for="goal in this.awayGoalsShow" :key="goal.num">
                                         <b>{{ goal.minute }}</b> {{ " " + goal.scoarer
                 }}<span v-if="goal.assistant">{{
                   " (" + goal.assistant + ") "
@@ -210,7 +210,7 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr v-for="player in game.starting">
+                                        <tr v-for="player in game.starting" :key="player.id">
                                             <td>
                                                 {{player.number}}
                                             </td>
@@ -251,7 +251,7 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr v-for="player in game.substitutions">
+                                        <tr v-for="player in game.substitutions" :key="player.id">
                                             <td>
                                                 {{player.number}}
                                             </td>
@@ -291,8 +291,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-/* eslint-disable */
 
 import db from "@/firebase.js";
 
@@ -326,22 +324,22 @@ export default {
 
             if (this.startArr.find(item => item.id == id) != null) {
                 if (el == 'red') {
-                    this.startArr.find(item => item.id == id).redCard = true
+                    this.startArr.find(item => item.id == id).redCard = true;
                 } else if (el == 'yellow') {
-                    this.startArr.find(item => item.id == id).yellowCard = true
+                    this.startArr.find(item => item.id == id).yellowCard = true;
                 }
             } else if (this.subsArr.find(item => item.id == id) != null) {
                 if (el == 'red') {
-                    this.subsArr.find(item => item.id == id).redCard = true
+                    this.subsArr.find(item => item.id == id).redCard = true;
                 } else if (el == 'yellow') {
-                    this.subsArr.find(item => item.id == id).yellowCard = true
+                    this.subsArr.find(item => item.id == id).yellowCard = true;
                 }
             }
 
         },
         save: function () {
-            var starting = []
-            var subs = []
+            var starting = [];
+            var subs = [];
 
             this.startArr.forEach(item => {
                 var p = {
@@ -349,8 +347,8 @@ export default {
                     minutes: parseInt(item.minutes),
                     redCard: item.redCard,
                     yellowCard: item.yellowCard
-                }
-                starting.push(p)
+                };
+                starting.push(p);
             })
 
             this.subsArr.forEach(item => {
@@ -360,7 +358,7 @@ export default {
                     redCard: item.redCard,
                     yellowCard: item.yellowCard
                 }
-                subs.push(p)
+                subs.push(p);
             })
 
             var game = {
@@ -379,99 +377,94 @@ export default {
 
             var ng = db.ref('events/completeGames').push(game);
 
-            game.id = ng.key
+            game.id = ng.key;
 
             this.game.starting.forEach(element => {
-                element.games += 1
+                element.games += 1;
 
-                var goals = this.ourGoals.filter(goal => goal.scoarer == element.id).length
-                var assists = this.ourGoals.filter(goal => goal.assistant == element.id).length
+                var goals = this.ourGoals.filter(goal => goal.scoarer == element.id).length;
+                var assists = this.ourGoals.filter(goal => goal.assistant == element.id).length;
 
-                element.goals += goals
-                element.assists += assists
+                element.goals += goals;
+                element.assists += assists;
 
                 db.ref('players/' + element.id)
                     .set(element)
-                    .then(() => {})
-
+                    .then(() => {});
             });
 
             this.game.substitutions.forEach(element => {
-                element.games += 1
+                element.games += 1;
 
-                var goals = this.ourGoals.filter(goal => goal.scoarer == element.id).length
-                var assists = this.ourGoals.filter(goal => goal.assistant == element.id).length
+                var goals = this.ourGoals.filter(goal => goal.scoarer == element.id).length;
+                var assists = this.ourGoals.filter(goal => goal.assistant == element.id).length;
 
-                element.goals += goals
-                element.assists += assists
+                element.goals += goals;
+                element.assists += assists;
 
                 db.ref('players/' + element.id)
                     .set(element)
-                    .then(() => {})
-
+                    .then(() => {});
             });
 
             db.ref('events/completeGames/' + ng.key)
                 .set(game)
                 .then(() => {
-
                     document.location.reload();
-                })
-
+                });
         },
         addOurGoal: function () {
 
-            this.ourNum++
+            this.ourNum++;
 
-            var SCnumber = null
+            var SCnumber = null;
 
-            var scoarer = null
-            var SCid = null
+            var scoarer = null;
+            var SCid = null;
             if (document.getElementById('ourScoarer') != null) {
-                scoarer = document.getElementById('ourScoarer').value.split(" ")[1]
-                SCnumber = document.getElementById('ourScoarer').value.split(" ")[0].replace('#', '')
-                SCid = this.playersArr.find(item => item.number == SCnumber).id
+                scoarer = document.getElementById('ourScoarer').value.split(" ")[1];
+                SCnumber = document.getElementById('ourScoarer').value.split(" ")[0].replace('#', '');
+                SCid = this.playersArr.find(item => item.number == SCnumber).id;
 
                 if (this.startArr.find(item => item.id == SCid) != null) {
-                    this.startArr.find(item => item.id == SCid).goals++
+                    this.startArr.find(item => item.id == SCid).goals++;
 
                 } else if (this.subsArr.find(item => item.id == SCid) != null) {
-                    this.subsArr.find(item => item.id == SCid).goals++
+                    this.subsArr.find(item => item.id == SCid).goals++;
                 }
             } else if (document.getElementById('ourOGScoarer') != null) {
-                scoarer = document.getElementById('ourOGScoarer').value
+                scoarer = document.getElementById('ourOGScoarer').value;
 
             }
 
-            var ASnumber = null
-            var assistant = null
-            var ASid = null
+            var ASnumber = null;
+            var assistant = null;
+            var ASid = null;
             if (document.getElementById('ourAssistant') != null) {
-                assistant = document.getElementById('ourAssistant').value.split(" ")[1]
-                ASnumber = document.getElementById('ourAssistant').value.split(" ")[0].replace('#', '')
-                ASid = this.playersArr.find(item => item.number == ASnumber).id
+                assistant = document.getElementById('ourAssistant').value.split(" ")[1];
+                ASnumber = document.getElementById('ourAssistant').value.split(" ")[0].replace('#', '');
+                ASid = this.playersArr.find(item => item.number == ASnumber).id;
 
                 if (this.startArr.find(item => item.id == ASid) != null) {
-                    this.startArr.find(item => item.id == ASid).assists += 1
+                    this.startArr.find(item => item.id == ASid).assists += 1;
 
                 } else if (this.subsArr.find(item => item.id == ASid) != null) {
-                    this.subsArr.find(item => item.id == ASid).assists += 1
+                    this.subsArr.find(item => item.id == ASid).assists += 1;
                 }
             } else if (document.getElementById('ourOGAssistant') != null) {
-                assistant = document.getElementById('ourOGAssistant').value
-
+                assistant = document.getElementById('ourOGAssistant').value;
             }
 
-            var type = document.getElementById('ourGoalTypeSel').value
+            var type = document.getElementById('ourGoalTypeSel').value;
 
-            var minute = document.getElementById('ourMinute').value
+            var minute = document.getElementById('ourMinute').value;
 
             var goal = {
                 scoarer: scoarer,
                 assistant: assistant,
                 type: type,
                 minute: minute
-            }
+            };
 
             var ng = {
                 scoarer: SCid,
@@ -479,41 +472,38 @@ export default {
                 type: type,
                 minute: parseInt(minute),
                 num: parseInt(this.ourNum)
-            }
+            };
 
             if (this.game.type == 'Домашний') {
-                this.homeGoalsShow.push(goal)
+                this.homeGoalsShow.push(goal);
             } else {
-                this.awayGoalsShow.push(goal)
+                this.awayGoalsShow.push(goal);
             }
 
-            this.ourGoals.push(ng)
-
+            this.ourGoals.push(ng);
         },
         addTheirGoal: function () {
 
-            this.theirNum++
-            var scoarer = null
+            this.theirNum++;
+            var scoarer = null;
             if (document.getElementById('theirScoarer') != null) {
-                scoarer = document.getElementById('theirScoarer').value
-
-            } else if (document.getElementById('theirOGScoarer') != null) {
-                scoarer = document.getElementById('theirOGScoarer').value
-
+                scoarer = document.getElementById('theirScoarer').value;
+            } 
+            else if (document.getElementById('theirOGScoarer') != null) {
+                scoarer = document.getElementById('theirOGScoarer').value;
             }
 
             var assistant = null
             if (document.getElementById('theirAssistant') != null) {
-                assistant = document.getElementById('theirAssistant').value
+                assistant = document.getElementById('theirAssistant').value;
 
             } else if (document.getElementById('theirOGAssistant') != null) {
-                assistant = document.getElementById('theirOGAssistant').value
-
+                assistant = document.getElementById('theirOGAssistant').value;
             }
 
-            var type = document.getElementById('theirGoalTypeSel').value
+            var type = document.getElementById('theirGoalTypeSel').value;
 
-            var minute = document.getElementById('theirMinute').value
+            var minute = document.getElementById('theirMinute').value;
 
             var goal = {
                 scoarer: scoarer,
@@ -521,16 +511,16 @@ export default {
                 type: type,
                 minute: parseInt(minute),
                 num: parseInt(this.theirNum)
-            }
+            };
 
             if (this.game.type == 'Выездной') {
-                this.homeGoalsShow.push(goal)
+                this.homeGoalsShow.push(goal);
             } else {
-                this.awayGoalsShow.push(goal)
+                this.awayGoalsShow.push(goal);
             }
 
-            goal.num = this.theirNum
-            this.theirGoals.push(goal)
+            goal.num = this.theirNum;
+            this.theirGoals.push(goal);
 
         },
 
@@ -545,28 +535,28 @@ export default {
             var sel = document.getElementById('ourGoalTypeSel');
 
             if (sel.value == 'Автогол') {
-                this.ourOG = true
+                this.ourOG = true;
             } else {
-                this.ourOG = false
+                this.ourOG = false;
             }
         },
         setOurOS: function () {
             var sel = document.getElementById('ourOSCB');
 
             if (sel.value) {
-                this.ourOS = true
+                this.ourOS = true;
             } else {
-                this.ourOS = false
+                this.ourOS = false;
             }
         },
         setTheirOG: function () {
             var sel = document.getElementById('theirGoalTypeSel');
 
             if (sel.value == 'Автогол') {
-                this.theirOG = true
+                this.theirOG = true;
 
             } else {
-                this.theirOG = false
+                this.theirOG = false;
 
             }
         },
@@ -574,9 +564,9 @@ export default {
             var sel = document.getElementById('theirOSCB');
 
             if (sel.value) {
-                this.theirOS = false
+                this.theirOS = false;
             } else {
-                this.theirOS = true
+                this.theirOS = true;
             }
         }
 
@@ -609,8 +599,8 @@ export default {
     created() {
         this.id = window.location.href.split("/").pop();
 
-        this.homeGoalsShow = []
-        this.awayGoalsShow = []
+        this.homeGoalsShow = [];
+        this.awayGoalsShow = [];
 
         db.ref("teamName").once("value", snapshot => {
             this.ourTeam = snapshot.val();
@@ -620,10 +610,10 @@ export default {
         db.ref("events/upcomingGames/" + this.id).once("value", snapshot => {
             this.game = snapshot.val();
 
-            this.startArr = []
-            this.subsArr = []
+            this.startArr = [];
+            this.subsArr = [];
 
-            var arr = []
+            var arr = [];
             this.game.starting.forEach(element => {
                 var p = {
                     id: element.id,
@@ -633,12 +623,12 @@ export default {
                     goals: 0,
                     assists: 0
                 }
-                arr.push(p)
+                arr.push(p);
 
             });
-            this.startArr = arr
+            this.startArr = arr;
 
-            arr = []
+            arr = [];
             this.game.substitutions.forEach(element => {
                 var p = {
                     id: element.id,
@@ -647,28 +637,25 @@ export default {
                     yellowCard: false,
                     goals: 0,
                     assists: 0
-                }
-                arr.push(p)
+                };
+                arr.push(p);
 
             });
-            this.subsArr = arr
-
+            this.subsArr = arr;
         });
 
-        var arr = []
+        var arr = [];
 
-        this.playersArr = []
+        this.playersArr = [];
 
-        arr = []
+        arr = [];
         db.ref("players").once("value", snapshot => {
             var playersObj = snapshot.val();
 
             snapshot.forEach(function (ss) {
                 arr.push(ss.val());
-
             });
-            this.playersArr = arr
-
+            this.playersArr = arr;
         });
 
     }

@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="game in games">
+                        <tr v-for="game in games" :key="game.id">
                             <td>{{game.rival}}</td>
                             <td>{{game.competition}}</td>
                             <td>{{game.type}}</td>
@@ -26,7 +26,9 @@
                             <td v-if="game.type == 'Выездной'">{{game.conceded + " : " + game.scored}}</td>
                             <td v-if="game.type == 'Домашний'">{{game.scored + " : " + game.conceded}}</td>
                             <td>
-                                <router-link :to="{path: '/game/' + game.id}"><i class="fa fa-info-circle"></i></router-link>
+                                <router-link :to="{path: '/game/' + game.id}">
+                                    <i class="fa fa-info-circle"></i>
+                                </router-link>
                             </td>
                         </tr>
                     </tbody>
@@ -38,10 +40,9 @@
 </template>
 
 <script>
-/* eslint-disable */
 import db from '@/firebase.js'
 
-let gamesRef = db.ref('events/completeGames')
+let gamesRef = db.ref('events/completeGames');
 
 export default {
     name: 'Games',
